@@ -18,6 +18,24 @@ namespace api_best_practice.Controllers
             _httpClient = httpClient;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetPopularMovies([FromQuery] int page = 1)
+        {
+            string url = $"https://api.themoviedb.org/3/movie?api_key={_apiKey}&language=en-US&page={page}";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return NotFound("Veriler bulunamadı.");
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var movies = JObject.Parse(json);
+
+            return Ok(movies);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMovieById(int id)
         {
