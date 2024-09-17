@@ -24,11 +24,12 @@ namespace api_best_practice.Controllers
         {
             // string url = $"https://api.themoviedb.org/3/movie?api_key={_apiKey}&language=en-US&page={page}";
             string url = $"https://api.themoviedb.org/3/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_average.desc&without_genres=99,10755&vote_count.gte=200&page=${page}";
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            // var request = new HttpRequestMessage(HttpMethod.Get, url);
     
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
 
-            var response = await _httpClient.GetAsync(request);
+            var response = await _httpClient.GetAsync(url);
 
             if (!response.IsSuccessStatusCode)
             {
