@@ -21,11 +21,7 @@ namespace api_best_practice.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPopularMovies([FromQuery] int page = 1)
         {
-            // string url = $"https://api.themoviedb.org/3/movie?api_key={_apiKey}&language=en-US&page={page}";
-            // var request = new HttpRequestMessage(HttpMethod.Get, url);
-            // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
-
-            string url = $"https://api.themoviedb.org/3/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_average.desc&without_genres=99,10755&vote_count.gte=200&page=${page}";
+            string url = $"https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_average.desc&without_genres=99,10755&vote_count.gte=200";
 
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _token);
 
@@ -36,9 +32,9 @@ namespace api_best_practice.Controllers
                 return NotFound("Veriler bulunamadı.");
             }
 
-            var json = await response.Content.ReadAsStringAsync();
-            var movies = JObject.Parse(json);
-
+            // zaten json geliyor parse etmene gerek yok.
+            var movies = await response.Content.ReadAsStringAsync();
+            // var movies = JObject.Parse(json);
             return Ok(movies);
         }
 
